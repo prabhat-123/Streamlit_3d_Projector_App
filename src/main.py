@@ -59,7 +59,8 @@ def plot_2d_updated(df, labels, need_labels,index, search=None):
 	df['labels'] = labels
 	print(df.head())
 	fig = px.scatter(df, x='pc1', y='pc2',
-				color='labels', color_discrete_sequence=cfg.colors[:len(unique_labels)])
+				color='labels', color_discrete_sequence=cfg.colors[:len(unique_labels)],
+				hover_name='index')
 	return fig
 
 
