@@ -1,0 +1,8 @@
+src/embedding_visualization_v3.py
+src/embedding_visualization.py
+src/embedding_viz.py
+__pycache__
+data/glove.txt
+data/w2v.txt
+data_1000.txt
+*.gif
