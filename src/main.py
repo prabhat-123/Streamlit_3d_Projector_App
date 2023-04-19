@@ -57,8 +57,9 @@ def plot_2d_updated(df, labels, need_labels,index, search=None):
 	if not need_labels:
 		labels=None
 	df['labels'] = labels
+	print(df.head())
 	fig = px.scatter(df, x='pc1', y='pc2',
-				color='labels', color_discrete_sequence=cfg.colors[:len(unique_labels)],hover_data='index')
+				color='labels', color_discrete_sequence=cfg.colors[:len(unique_labels)])
 	return fig
 
 
@@ -67,14 +68,15 @@ def plot_2d_updated(df, labels, need_labels,index, search=None):
 def plot_3d_updated(df, labels, need_labels,index, search=None):
 	sizes = [5]*len(labels)
 	df['index']=index
+	df['labels'] = labels
 	if search: 
 		sizes[search] = 25
 	unique_labels = np.unique(labels)	
 	if not need_labels:
 		labels=None
-	df['labels'] = labels
 	fig = px.scatter_3d(df, x='pc1', y='pc2', z='pc3',
-				color='labels', color_discrete_sequence=cfg.colors[:len(unique_labels)],hover_data='index')
+				color='labels', color_discrete_sequence=cfg.colors[:len(unique_labels)],
+				hover_name='index')
 	return fig
 
 	
@@ -156,26 +158,27 @@ def plot_for_D(data, labels, need_labels, index,search_idx=None):
 if __name__ == "__main__":
 	display_props()
 	uploaded_file = st.sidebar.file_uploader("Upload a file (Optional)", type="txt")
-	data, labels, index = load_data(uploaded_file)
 	reductions_type = display_reductions()
 	dim = display_dimensions()
 	search_for = display_search()
 	need_labels = display_labels()
 	button = st.sidebar.button('Visualise')
-	if button:
-		if dim=='2-D':
-			pca = PCA(n_components=2)
-			data = pca.fit_transform(data)
-			pca_df = pd.DataFrame(data=data, columns=['pc1', 'pc2'])
+	if uploaded_file:
+		data, labels, index = load_data(uploaded_file)
+		if button:
+			if dim=='2-D':
+				pca = PCA(n_components=2)
+				data = pca.fit_transform(data)
+				pca_df = pd.DataFrame(data=data, columns=['pc1', 'pc2'])
 
-		else:
-			pca = PCA(n_components=3)
-			data = pca.fit_transform(data)
-			pca_df = pd.DataFrame(data=data, columns=['pc1', 'pc2', 'pc3'])
-		if search_for:
-			search_idx = labels.index(search_for)
-			plot_for_D(pca_df, labels, need_labels, index, search_idx)
-		else:
-			plot_for_D(pca_df, labels, need_labels,index)
+			else:
+				pca = PCA(n_components=3)
+				data = pca.fit_transform(data)
+				pca_df = pd.DataFrame(data=data, columns=['pc1', 'pc2', 'pc3'])
+			if search_for:
+				search_idx = labels.index(search_for)
+				plot_for_D(pca_df, labels, need_labels, index, search_idx)
+			else:
+				plot_for_D(pca_df, labels, need_labels,index)
 
 
