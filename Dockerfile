@@ -15,4 +15,4 @@ RUN pip3 install -r requirements.txt
 
 
 ## tell the image what to do when it starts as a container
-CMD ["streamlit", "run", "src/main_v2.py"]
+CMD ["streamlit", "run", "src/main_v3.py"]
