@@ -6,3 +6,4 @@ data/glove.txt
 data/w2v.txt
 data_1000.txt
 *.gif
+ohe_resampled_data.txt
